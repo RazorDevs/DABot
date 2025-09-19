@@ -2,6 +2,5 @@ discord-py-interactions
 beautifulsoup4
 pytest-playwright 
 playwright
-selenium
 dotenv
-sanic
+shiv
