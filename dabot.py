@@ -164,6 +164,6 @@ async def sendReview(ctx: SlashContext, text):
 
 @app.route('/')
 async def startup_test(request):
-	run = bot.start(os.getenv('TOKEN'))
+	bot.start(os.getenv('TOKEN'))
 	return json({'hello': 'world'})
 

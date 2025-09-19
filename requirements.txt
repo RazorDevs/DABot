@@ -1,1 +1,7 @@
-uvicorn==0.24.0.post1
+discord-py-interactions
+beautifulsoup4
+pytest-playwright 
+playwright
+selenium
+dotenv
+sanic
