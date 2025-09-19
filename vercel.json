@@ -8,7 +8,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dabot.py"
+      "dest": "api/index.py"
     }
   ]
 }
