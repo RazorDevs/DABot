@@ -1,4 +1,10 @@
 {
+  "builds": [
+    {
+      "src": "dabot.py",
+      "use": "@vercel/python"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
