@@ -11,16 +11,11 @@ from interactions import Task, IntervalTrigger
 from interactions import check
 from interactions import slash_command, SlashContext, BaseContext
 from playwright.async_api import async_playwright, Playwright, Locator
-from selenium import webdriver
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from sanic import Sanic
-from sanic.response import json as js
 
 load_dotenv()
 
 # Initialize Bot and denote the Command Prefix
 bot = AutoShardedClient(intents=Intents.DEFAULT)
-app = Sanic("DABot")
 
 # Event when Bot Successfully Connects
 @listen()
@@ -63,7 +58,7 @@ async def update_mod_downloads(modid, name, channel_id):
 
 @listen()
 async def on_command_error(ctx, error):
-    await ctx.send("Invalid command.") 
+    await ctx.send("Invalid command.")
     print("Invalid Command called.")
 
 # HELP OP COMMAND
@@ -162,8 +157,4 @@ async def sendReview(ctx: SlashContext, text):
     await ch.send(embed=embed)
 
 
-@app.route('/')
-async def startup_test(request):
-	bot.start(os.getenv('TOKEN'))
-	return json({'hello': 'world'})
-
+bot.start(os.getenv('TOKEN'))
