@@ -158,4 +158,4 @@ async def sendReview(ctx: SlashContext, text):
     await ctx.send("Review sent!", ephemeral=True)
     await ch.send(embed=embed)
 
-bot.start(os.getenv('TOKEN'))
+run = bot.start(os.getenv('TOKEN'))
