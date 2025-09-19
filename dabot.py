@@ -13,11 +13,14 @@ from interactions import slash_command, SlashContext, BaseContext
 from playwright.async_api import async_playwright, Playwright, Locator
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
+from sanic import Sanic
+from sanic.response import json as js
 
 load_dotenv()
 
 # Initialize Bot and denote the Command Prefix
 bot = AutoShardedClient(intents=Intents.DEFAULT)
+app = Sanic("DABot")
 
 # Event when Bot Successfully Connects
 @listen()
@@ -158,4 +161,9 @@ async def sendReview(ctx: SlashContext, text):
     await ctx.send("Review sent!", ephemeral=True)
     await ch.send(embed=embed)
 
-run = bot.start(os.getenv('TOKEN'))
+
+@app.route('/')
+async def startup_test(request):
+	run = bot.start(os.getenv('TOKEN'))
+	return json({'hello': 'world'})
+
