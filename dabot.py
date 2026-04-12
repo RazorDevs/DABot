@@ -4,6 +4,7 @@ import os
 import random
 import requests
 
+from workers import Response, WorkerEntrypoint, env
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from interactions import AutoShardedClient, Intents, listen
@@ -19,7 +20,7 @@ load_dotenv(dotenv_path='./.env')
 # Initialize Bot and denote the Command Prefix
 bot = AutoShardedClient(intents=Intents.DEFAULT)
 
-headers = {'Accept': 'application/json', 'x-api-key': os.getenv('CURSEFORGE_TOKEN')}
+headers = {'Accept': 'application/json', 'x-api-key': env.CURSEFORGE_TOKEN}
 
 # Event when Bot Successfully Connects
 @listen()
@@ -34,9 +35,9 @@ async def downloadFetch():
         browser = await pw.firefox.launch(headless=True)
         ctx = await browser.new_context()
         async with asyncio.TaskGroup() as tg:
-            tg.create_task(update_mod_downloads(ctx, "deep-aether", "Deep Aether", 852465, int(os.getenv('DEEP_AETHER_CHANNEL'))))
-            tg.create_task(update_mod_downloads(ctx, "aeroblender", "Aeroblender", 879879, int(os.getenv('AEROBLENDER_CHANNEL'))))
-            tg.create_task(update_mod_downloads(ctx, "ascended-quark", "Ascended Quark", 971104, int(os.getenv('ASCENDED_QUARK_CHANNEL'))))
+            tg.create_task(update_mod_downloads(ctx, "deep-aether", "Deep Aether", 852465, int(env.DEEP_AETHER_CHANNEL)))
+            tg.create_task(update_mod_downloads(ctx, "aeroblender", "Aeroblender", 879879, int(env.AEROBLENDER_CHANNEL)))
+            tg.create_task(update_mod_downloads(ctx, "ascended-quark", "Ascended Quark", 971104, int(env.ASCENDED_QUARK_CHANNEL)))
 
 async def update_mod_downloads(ctx, modid, name, pid, channel_id):
     CFENDPOINT = f"https://api.curseforge.com/v1/mods/{pid}"
@@ -69,4 +70,4 @@ for f in command_list:
     except:
         print(f"There was an error with the {f} command file.")
 
-bot.start(os.getenv('TOKEN'))
+bot.start(env.TOKEN)
