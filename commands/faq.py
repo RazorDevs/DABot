@@ -1,9 +1,10 @@
 # FAQ Command to answer questions. Currently hardcoded
 # TODO: Dynamically retrieve the Q&A (No TXT file)
 
-@slash_command(name='faq', description="Prints the FAQ of Deep Aether.")
-async def faq(ctx: SlashContext):
-    embed = Embed(title="FAQ", color = FlatUIColors.CARROT)
+@app.load
+@discohook.command.slash(name='faq', description="Prints the FAQ of Deep Aether.")
+async def faq(i: discohook.Interaction):
+    embed = discohook.Embed(title="FAQ", color = FlatUIColors.CARROT)
 
     embed.add_field(name="Q: Do you plan on backporting to other versions?",
         value="A: No we don't. The Aether Mod only plans releases from 1.19.2 and onwards, meaning this addon cannot reach versions that are prior to that.", inline=False)
@@ -17,4 +18,4 @@ async def faq(ctx: SlashContext):
     embed.add_field(name="Q: I am interested in joining your team to help with the development of the mod! How can I do so?",
         value=f"A: We are always open to accepting new members, especially testers, and developers. See {bot.get_channel(1115999673673592832).mention}.", inline=False)
 
-    await ctx.send(embed=embed)
+    await i.response.send(embed=embed)
