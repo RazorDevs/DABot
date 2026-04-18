@@ -1,2 +1,2 @@
 discohook
-requests
+httpx
