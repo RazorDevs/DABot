@@ -1,2 +1,3 @@
 discohook
 dotenv
+requests
