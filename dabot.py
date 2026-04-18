@@ -1,11 +1,8 @@
-import asyncio
-import datetime
 import os
-import random
 import discohook
+import httpx
 
 from workers import WorkerEntrypoint, Response
-from httpx import AsyncClient
 
 import commands.help
 import commands.faq
