@@ -7,8 +7,8 @@ import discohook
 
 from workers import WorkerEntrypoint, Response
 
-import "./commands/help.py"
-import "./commands/faq.py"
+import commands.help
+import commands.faq
 
 # Checks if user is an admin
 async def is_admin(ctx: discohook.Interaction):
