@@ -1,0 +1,9 @@
+name = "dabot"
+main = "dabot.py"
+compatibility_date = "2024-03-20"
+compatibility_flags = ["python_workers"]
+workers_dev = true
+
+# This sets up your 30-minute background task
+[triggers]
+crons = ["*/30 * * * *"]
