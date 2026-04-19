@@ -30,9 +30,6 @@ import httpx
 
 from workers import WorkerEntrypoint, Response
 
-import commands.help
-import commands.faq
-
 # Checks if user is an admin
 async def is_admin(ctx: discohook.Interaction):
     return ctx.author.permissions.administrator
@@ -55,6 +52,9 @@ class Bot(WorkerEntrypoint):
             else:
                 await i.response.send(user_response, ephemeral=True)
             print(f"Command error occurred. {error}")
+
+        import commands.help
+        import commands.faq
 
         app.add_commands(help, faq)
 
