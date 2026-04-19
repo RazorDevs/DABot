@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Clean JS artifacts
+        run: rm -rf node_modules package.json package-lock.json
         
       - name: Deploy with Wrangler
         uses: cloudflare/wrangler-action@v3
