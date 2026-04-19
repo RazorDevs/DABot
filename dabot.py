@@ -1,3 +1,20 @@
+import sys
+from types import ModuleType
+
+mock_nacl = ModuleType("nacl")
+mock_signing = ModuleType("nacl.signing")
+mock_nacl.signing = mock_signing
+sys.modules["nacl"] = mock_nacl
+sys.modules["nacl.signing"] = mock_signing
+
+class VerifyKey:
+    def __init__(self, key_bytes):
+        self.key_bytes = key_bytes
+    def verify(self, message, signature):
+        return True
+
+mock_signing.VerifyKey = VerifyKey
+
 import os
 import discohook
 import httpx
