@@ -6,3 +6,9 @@ dependencies = [
     "discohook",
     "httpx"
 ]
+
+[dependency-groups]
+dev = [
+  "workers-py",
+  "workers-runtime-sdk"
+]
