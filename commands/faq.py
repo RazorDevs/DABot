@@ -1,7 +1,7 @@
 # FAQ Command to answer questions. Currently hardcoded
 # TODO: Dynamically retrieve the Q&A (No TXT file)
 
-@app.load
+@app.register
 @discohook.command.slash(name='faq', description="Prints the FAQ of Deep Aether.")
 async def faq(i: discohook.Interaction):
     embed = discohook.Embed(title="FAQ", color = FlatUIColors.CARROT)

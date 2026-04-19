@@ -1,7 +1,7 @@
 # HELP OP COMMAND
 
 #@slash_command(name="help", description="List and description of all commands.")
-@app.load
+@app.register
 @discohook.command.slash(name="help", description="List and description of all commands.")
 async def help(i: discohook.Interaction):
     embed = discohook.Embed(title="Help", description="Here's the list of all the bots' commands.")
