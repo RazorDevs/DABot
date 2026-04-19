@@ -34,13 +34,13 @@ from workers import WorkerEntrypoint, Response
 async def is_admin(ctx: discohook.Interaction):
     return ctx.author.permissions.administrator
 
-class Bot(WorkerEntrypoint):
-    async def fetch(self, req, env):
+class Default(WorkerEntrypoint):
+    async def fetch(self, req):
         app = discohook.Client(
-            application_id=env.APP_ID,
-            public_key=env.KEY,
-            token=env.TOKEN,
-            password=env.APP_PSW
+            application_id=self.env.APP_ID,
+            public_key=self.env.KEY,
+            token=self.env.TOKEN,
+            password=self.env.APP_PSW
         )
 
         # Wrong command Event
