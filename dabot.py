@@ -1,19 +1,28 @@
 import sys
 from types import ModuleType
 
-mock_nacl = ModuleType("nacl")
-mock_signing = ModuleType("nacl.signing")
-mock_nacl.signing = mock_signing
-sys.modules["nacl"] = mock_nacl
-sys.modules["nacl.signing"] = mock_signing
+def mock_nacl():
+    nacl = ModuleType("nacl")
+    nacl.__path__ = []  # This makes it a package
 
-class VerifyKey:
-    def __init__(self, key_bytes):
-        self.key_bytes = key_bytes
-    def verify(self, message, signature):
-        return True
+    nacl_exceptions = ModuleType("nacl.exceptions")
+    class BadSignatureError(Exception):
+        pass
+    nacl_exceptions.BadSignatureError = BadSignatureError
 
-mock_signing.VerifyKey = VerifyKey
+    nacl_signing = ModuleType("nacl.signing")
+    class VerifyKey:
+        def __init__(self, key_bytes, encoder=None):
+            self.key_bytes = key_bytes
+        def verify(self, message, signature):
+            return True
+    nacl_signing.VerifyKey = VerifyKey
+
+    sys.modules["nacl"] = nacl
+    sys.modules["nacl.exceptions"] = nacl_exceptions
+    sys.modules["nacl.signing"] = nacl_signing
+
+mock_nacl()
 
 import os
 import discohook
