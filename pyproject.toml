@@ -3,7 +3,8 @@ name = "dabor"
 version = "1.0.0"
 requires-python = ">=3.11"
 dependencies = [
-    "discohook",
+    "pynacl",
+    "discohook @ git+https://github.com/jnsougata/discohook.git@dev",
     "httpx"
 ]
 
