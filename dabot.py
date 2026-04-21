@@ -53,8 +53,10 @@ class Default(WorkerEntrypoint):
                 await i.response.send(user_response, ephemeral=True)
             print(f"Command error occurred. {error}")
 
-        import commands.help
-        import commands.faq
+        try:
+            exec(compile(open(f"./commands/{f}.py", "rb").read(), f"./commands/{f}.py", 'exec'))
+        except:
+            print(f"There was an error with the {f} command file.")
 
         app.add_commands(help, faq)
 
