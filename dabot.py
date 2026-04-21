@@ -53,10 +53,36 @@ class Default(WorkerEntrypoint):
                 await i.response.send(user_response, ephemeral=True)
             print(f"Command error occurred. {error}")
 
-        try:
-            exec(compile(open(f"./commands/{f}.py", "rb").read(), f"./commands/{f}.py", 'exec'))
-        except:
-            print(f"There was an error with the {f} command file.")
+        @app.load
+        @discohook.command.slash(name="help", description="List and description of all commands.")
+        async def help(i: discohook.Interaction):
+            embed = discohook.Embed(title="Help", description="Here's the list of all the bots' commands.")
+
+            if is_admin:
+                embed.add_field(name="/purge", value="Removes a max of 10 messages.", inline=False)
+
+            embed.add_field(name="/roll", value="Roll customable dices.", inline=False)
+            embed.add_field(name="/faq", value="Shows our FAQ.", inline=False)
+            await i.response.send(embed=embed)
+
+        @app.load
+        @discohook.command.slash(name='faq', description="Prints the FAQ of Deep Aether.")
+        async def faq(i: discohook.Interaction):
+            embed = discohook.Embed(title="FAQ", color = FlatUIColors.CARROT)
+
+            embed.add_field(name="Q: Do you plan on backporting to other versions?",
+                value="A: No we don't. The Aether Mod only plans releases from 1.19.2 and onwards, meaning this addon cannot reach versions that are prior to that.", inline=False)
+            embed.add_field(name="Q: Where can I get Sterling Aerclouds? I can't find any!",
+                value="A: Sterling Aerclouds are found above Y = 200. If you're playing with a low render distance it might be harder to spot the clusters, *but they're there*!",
+                inline=False)
+            embed.add_field(name="Q: I'm having trouble finding info about the mod, where can I look for it?",
+                value="A: We finally have some info on the Wiki! Check it out at https://aether.wiki.gg/wiki/Deep_Aether.", inline=False)
+            embed.add_field(name="Q: Do you plan on adding cross-compatibility with other mods and Aether addons?",
+                value="A: Yes, we have already done that with many of the popular addons: Aether Lost Content, Aether Redux, and more!", inline=False)
+            embed.add_field(name="Q: I am interested in joining your team to help with the development of the mod! How can I do so?",
+                value=f"A: We are always open to accepting new members, especially testers, and developers. See {bot.get_channel(1115999673673592832).mention}.", inline=False)
+
+            await i.response.send(embed=embed)
 
         app.add_commands(help, faq)
 
