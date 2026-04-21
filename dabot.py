@@ -14,7 +14,7 @@ def mock_nacl():
         def __init__(self, key_bytes, encoder=None):
             self.key_bytes = key_bytes
         def verify(self, message, signature):
-            return True
+            return message
     nacl_signing.VerifyKey = VerifyKey
 
     sys.modules["nacl"] = nacl
