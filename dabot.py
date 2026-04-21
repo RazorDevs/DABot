@@ -86,7 +86,7 @@ class Default(WorkerEntrypoint):
 
         app.add_commands(help, faq)
 
-        return Response("App executed.")
+        return await app.handle(req)
 
     async def scheduled(self, event, env, ctx):
         headers = Headers({'Accept': 'application/json', 'x-api-key': env.CURSEFORGE_TOKEN})
