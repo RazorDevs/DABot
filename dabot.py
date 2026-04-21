@@ -60,7 +60,7 @@ class Default(WorkerEntrypoint):
 
         return await app.handle(request)
 
-    async def scheduled(self, event, env):
+    async def scheduled(self, event, env, ctx):
         headers = Headers({'Accept': 'application/json', 'x-api-key': env.CURSEFORGE_TOKEN})
         async with httpx.AsyncClient() as client:
 
