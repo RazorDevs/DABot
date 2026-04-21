@@ -25,6 +25,7 @@ def mock_nacl():
 mock_nacl()
 
 import os
+import asgi
 import discohook
 import httpx
 
@@ -86,7 +87,7 @@ class Default(WorkerEntrypoint):
 
         app.add_commands(help, faq)
 
-        return await app.handle(req)
+        return await asgi.fetch(app, req)
 
     async def scheduled(self, event, env, ctx):
         headers = Headers({'Accept': 'application/json', 'x-api-key': env.CURSEFORGE_TOKEN})
