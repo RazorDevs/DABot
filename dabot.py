@@ -38,6 +38,36 @@ async def is_admin(ctx: discohook.Interaction):
         return False
     return ctx.author.permissions.administrator
 
+@discohook.command.slash(name='faq', description="Prints the FAQ of Deep Aether.")
+async def faq_cmd(i: discohook.Interaction):
+    embed = discohook.Embed(title="FAQ", color=0xe67e22)
+
+    embed.add_field(name="Q: Do you plan on backporting to other versions?",
+        value="A: No we don't. The Aether Mod only plans releases from 1.19.2 and onwards, meaning this addon cannot reach versions that are prior to that.", inline=Fa>
+    embed.add_field(name="Q: Where can I get Sterling Aerclouds? I can't find any!",
+        value="A: Sterling Aerclouds are found above Y = 200. If you're playing with a low render distance it might be harder to spot the clusters, *but they're there*>
+        inline=False)
+    embed.add_field(name="Q: I'm having trouble finding info about the mod, where can I look for it?",
+        value="A: We finally have some info on the Wiki! Check it out at https://aether.wiki.gg/wiki/Deep_Aether.", inline=False)
+    embed.add_field(name="Q: Do you plan on adding cross-compatibility with other mods and Aether addons?",
+        value="A: Yes, we have already done that with many of the popular addons: Aether Lost Content, Aether Redux, and more!", inline=False)
+
+    embed.add_field(name="Q: I am interested in joining your team to help with the development of the mod! How can I do so?",
+        value="A: We are always open to accepting new members, especially testers, and developers. See <#1115999673673592832>.", inline=False)
+
+    await i.response.send(embed=embed)
+
+@discohook.command.slash(name="help", description="List and description of all commands.")
+async def help_cmd(i: discohook.Interaction):
+    embed = discohook.Embed(title="Help", description="Here's the list of all the bots' commands.")
+
+    if await is_admin(i):
+        embed.add_field(name="/purge", value="Removes a max of 10 messages.", inline=False)
+
+    embed.add_field(name="/roll", value="Roll customable dices.", inline=False)
+    embed.add_field(name="/faq", value="Shows our FAQ.", inline=False)
+    await i.response.send(embed=embed)
+
 def setup_bot(env):
     """Initializes the bot and registers commands once."""
     app = discohook.Client(
@@ -56,54 +86,18 @@ def setup_bot(env):
             await i.response.send(user_response, ephemeral=True)
         print(f"Command error occurred. {error}")
 
-    @app.load
-    @discohook.command.slash(name="help", description="List and description of all commands.")
-    async def help_cmd(i: discohook.Interaction):
-        embed = discohook.Embed(title="Help", description="Here's the list of all the bots' commands.")
-
-        # Properly await the admin check
-        if await is_admin(i):
-            embed.add_field(name="/purge", value="Removes a max of 10 messages.", inline=False)
-
-        embed.add_field(name="/roll", value="Roll customable dices.", inline=False)
-        embed.add_field(name="/faq", value="Shows our FAQ.", inline=False)
-        await i.response.send(embed=embed)
-
-    @app.load
-    @discohook.command.slash(name='faq', description="Prints the FAQ of Deep Aether.")
-    async def faq_cmd(i: discohook.Interaction):
-        # Replaced FlatUIColors with raw hex integer
-        embed = discohook.Embed(title="FAQ", color=0xe67e22)
-
-        embed.add_field(name="Q: Do you plan on backporting to other versions?",
-            value="A: No we don't. The Aether Mod only plans releases from 1.19.2 and onwards, meaning this addon cannot reach versions that are prior to that.", inline=False)
-        embed.add_field(name="Q: Where can I get Sterling Aerclouds? I can't find any!",
-            value="A: Sterling Aerclouds are found above Y = 200. If you're playing with a low render distance it might be harder to spot the clusters, *but they're there*!",
-            inline=False)
-        embed.add_field(name="Q: I'm having trouble finding info about the mod, where can I look for it?",
-            value="A: We finally have some info on the Wiki! Check it out at https://aether.wiki.gg/wiki/Deep_Aether.", inline=False)
-        embed.add_field(name="Q: Do you plan on adding cross-compatibility with other mods and Aether addons?",
-            value="A: Yes, we have already done that with many of the popular addons: Aether Lost Content, Aether Redux, and more!", inline=False)
-
-        # Hardcoded the raw channel mention string instead of using bot.get_channel()
-        embed.add_field(name="Q: I am interested in joining your team to help with the development of the mod! How can I do so?",
-            value="A: We are always open to accepting new members, especially testers, and developers. See <#1115999673673592832>.", inline=False)
-
-        await i.response.send(embed=embed)
-
+    app.add_commands(help, faq)
     return app
 
 class Default(WorkerEntrypoint):
     async def fetch(self, req):
         global bot_app
-        # Initialize bot on first run
         if bot_app is None:
             bot_app = setup_bot(self.env)
             
         return await asgi.fetch(bot_app, req, self.env)
 
     async def scheduled(self, event, env, ctx):
-        # Use standard dict for headers
         cf_headers = {'Accept': 'application/json', 'x-api-key': env.CURSEFORGE_TOKEN}
         
         async with httpx.AsyncClient() as client:
@@ -112,7 +106,6 @@ class Default(WorkerEntrypoint):
                 CFENDPOINT = f"https://api.curseforge.com/v1/mods/{pid}"
                 MENDPOINT = f"https://api.modrinth.com/v2/project/{modid}"
 
-                # Properly await the async client requests
                 cf_resp = await client.get(CFENDPOINT, headers=cf_headers)
                 el1 = int(cf_resp.json()['data']['downloadCount'])
                 
